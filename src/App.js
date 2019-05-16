@@ -4,6 +4,7 @@ import {Form, Scope, Input} from '@rocketseat/unform';
 import './index.css';
 
 
+
 const initialData = { 
   name: 'Rafael',
   Email: {
@@ -15,12 +16,14 @@ const initialData = {
 
 
 const schema = Yup.object().shape({
-  name: Yup.string().required('Digite seu nome'), 
-  address: Yup.object().shape ({
-    email: Yup.string().email('Insira um email válido').required('Email Obrigatório'),
-    Confirmaremail: Yup.string().email('confirme seu email').required('Confirme Email Obrigatório')
-  }) 
-});
+  name: Yup.string().required(),
+  email: Yup.string().email().required(),
+  password: Yup.string().when('$updatePassword', {
+    is: true,
+    then: Yup.string().min(4).required(),
+    otherwise: Yup.string().strip(true)
+  }),
+})
 
 function App() {
   function handleSubmit(data) {
@@ -31,7 +34,7 @@ function App() {
      <Input name="name" label="Nome" /><br />    
     
     <Scope path="address" >
-     <Input name="street"         label="Senha" />  <br /> 
+     <Input name="Password"         label="Senha" />  <br /> 
      <Input name="email"          label="Email" />  <br />
      <Input name="confirmaremail" label="Confirmar Email" />  <br />
      
